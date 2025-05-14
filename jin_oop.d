@@ -6,6 +6,10 @@ import std;
 
 alias Canvas = File;
 
+void paint( Commands ... )( Canvas canvas, Commands commands ) {
+    canvas.writeln( commands );
+}
+
 struct Coord {
     
     int x;
@@ -29,7 +33,7 @@ class Point: Shape {
     }
     
     override void draw( Canvas canvas ) const {
-        canvas.writeln( "	Point( pos:", this.pos, " )" );
+        canvas.paint( "	Point( pos:", this.pos, " )" );
     }
     
 }
@@ -44,7 +48,7 @@ class Circle: Shape {
     }
     
     override void draw( Canvas canvas ) const {
-        canvas.writeln( "	Circle( pos:", this.pos, ", radius:", this.radius, " )" );
+        canvas.paint( "	Circle( pos:", this.pos, ", radius:", this.radius, " )" );
     }
     
 }
@@ -59,7 +63,7 @@ class Rectangle: Shape {
     }
     
     override void draw( Canvas canvas ) const {
-        canvas.writeln( "	Rectangle( pos:", this.pos, ", dims:", this.dims, " )" );
+        canvas.paint( "	Rectangle( pos:", this.pos, ", dims:", this.dims, " )" );
     }
     
 }
