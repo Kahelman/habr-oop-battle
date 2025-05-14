@@ -4,11 +4,7 @@
 
 import std;
 
-immutable interface Shape {
-    void draw( File output );
-}
-
-immutable struct Coord {
+struct Coord {
     
     int x;
     int y;
@@ -19,75 +15,76 @@ immutable struct Coord {
     
 }
 
- immutable class Point: Shape {
-    
+abstract class Shape {
     Coord pos;
+    void draw( File output ) const;
+}
+
+class Point: Shape {
     
     this( int x, int y ) {
         this.pos = Coord( x, y );
     }
     
-    void draw( File output ) {
-        output.writeln( "Drawing Point( pos:", this.pos, " )" );
+    override void draw( File output ) const {
+        output.writeln( "	Point( pos:", this.pos, " )" );
     }
     
 }
 
-immutable class Circle: Shape {
+class Circle: Shape {
     
-    Coord center;
     int radius;
     
     this( int x, int y, int radius ) {
-        this.center = Coord( x, y );
+        this.pos = Coord( x, y );
         this.radius = radius;
     }
     
-    void draw( File output ) {
-        output.writeln( "Drawing Circle( center:", this.center, ", radius:", this.radius, " )" );
+    override void draw( File output ) const {
+        output.writeln( "	Circle( pos:", this.pos, ", radius:", this.radius, " )" );
     }
     
 }
 
-immutable class Rectangle: Shape {
+class Rectangle: Shape {
     
-    Coord from;
-    Coord to;
+    Coord dims;
     
-    this( int fx, int fy, int tx, int ty ) {
-        this.from = Coord( fx, fy );
-        this.to = Coord( tx, ty );
+    this( int px, int py, int dx, int dy ) {
+        this.pos = Coord( px, py );
+        this.dims = Coord( dx, dy );
     }
     
-    void draw( File output ) {
-        output.writeln( "Drawing Rectangle( from:", this.from, ", to:", this.to, " )" );
+    override void draw( File output ) const {
+        output.writeln( "	Rectangle( pos:", this.pos, ", dims:", this.dims, " )" );
     }
     
 }
 
 
-immutable class Scene {
+class Scene {
     
     Shape[] shapes;
     
-    this( immutable Shape[] shapes ... ) {
-        this.shapes = shapes;
-    }
-    
-    void render( File output ) {
+    void render( File output ) const {
+        output.writeln( "Scene[" );
         foreach( shape; shapes ) shape.draw( output );
+        output.writeln( "]" );
     }
     
 }
 
 void main() {
     
-    auto scene = new Scene(
-    	new Point( 1, 1 ),
-    	new Circle( 5, 5, 3 ),
-    	new Rectangle( 0, 0, 6, 3 ),
-    );
-    
+    auto scene = new Scene;
     scene.render( stdout );
     
+    scene.shapes ~= new Point( 1, 1 );
+    scene.shapes ~= new Circle( 5, 5, 3 ),
+    scene.shapes ~= new Rectangle( 0, 0, 6, 3 ),
+    scene.render( stdout );
+
+    scene.shapes[0].pos = Coord( 2, 2 );
+    scene.render( stdout );
 }
