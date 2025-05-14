@@ -70,7 +70,7 @@ immutable class Scene {
     
     Shape[] shapes;
     
-    this( immutable(immutable(Shape)[]) shapes ... ) {
+    this( immutable Shape[] shapes ... ) {
         this.shapes = shapes;
     }
     
