@@ -22,48 +22,48 @@ struct Coord {
 }
 
 abstract class Shape {
-    Coord pos;
+    Coord anchor;
     void draw( Canvas canvas ) const;
 }
 
 class Point: Shape {
     
     this( int x, int y ) {
-        this.pos = Coord( x, y );
+        this.anchor = Coord( x, y );
     }
     
     override void draw( Canvas canvas ) const {
-        canvas.paint( "	Point( pos:", this.pos, " )" );
+        canvas.paint( "	Point( anchor:", this.anchor, " )" );
     }
     
 }
 
 class Circle: Shape {
     
-    int radius;
+    uint radius;
     
     this( int x, int y, int radius ) {
-        this.pos = Coord( x, y );
+        this.anchor = Coord( x, y );
         this.radius = radius;
     }
     
     override void draw( Canvas canvas ) const {
-        canvas.paint( "	Circle( pos:", this.pos, ", radius:", this.radius, " )" );
+        canvas.paint( "	Circle( anchor:", this.anchor, ", radius:", this.radius, " )" );
     }
     
 }
 
 class Rectangle: Shape {
     
-    Coord dims;
+    Coord target;
     
     this( int px, int py, int dx, int dy ) {
-        this.pos = Coord( px, py );
-        this.dims = Coord( dx, dy );
+        this.anchor = Coord( px, py );
+        this.target = Coord( dx, dy );
     }
     
     override void draw( Canvas canvas ) const {
-        canvas.paint( "	Rectangle( pos:", this.pos, ", dims:", this.dims, " )" );
+        canvas.paint( "	Rectangle( anchor:", this.anchor, ", target:", this.target, " )" );
     }
     
 }
@@ -91,6 +91,6 @@ void main() {
     scene.shapes ~= new Rectangle( 0, 0, 6, 3 ),
     scene.draw( stdout );
 
-    scene.shapes[0].pos = Coord( 2, 2 );
+    scene.shapes[0].anchor = Coord( 2, 2 );
     scene.draw( stdout );
 }
