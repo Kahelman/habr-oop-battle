@@ -21,16 +21,26 @@ struct Coord {
     
 }
 
+alias AllFieldtypes( alias Class ) = staticMap!( Fields, BaseClassesTuple!Class, Class );
+
+mixin template Ctors() {
+    
+    this() {}
+    
+    this( AllFieldtypes!( typeof(this) ) args ... ) {
+        AliasSeq!( super.tupleof, this.tupleof ) = args;
+    }
+    
+}
+
 abstract class Shape {
+    mixin Ctors;
     Coord anchor;
     void draw( Canvas canvas ) const;
 }
 
 class Point: Shape {
-    
-    this( int x, int y ) {
-        this.anchor = Coord( x, y );
-    }
+    mixin Ctors;
     
     override void draw( Canvas canvas ) const {
         canvas.paint( "	Point( anchor:", this.anchor, " )" );
@@ -39,13 +49,9 @@ class Point: Shape {
 }
 
 class Circle: Shape {
+    mixin Ctors;
     
     uint radius;
-    
-    this( int x, int y, uint radius ) {
-        this.anchor = Coord( x, y );
-        this.radius = radius;
-    }
     
     override void draw( Canvas canvas ) const {
         canvas.paint( "	Circle( anchor:", this.anchor, ", radius:", this.radius, " )" );
@@ -54,13 +60,9 @@ class Circle: Shape {
 }
 
 class Square: Shape {
+    mixin Ctors;
     
     uint size;
-    
-    this( int x, int y, uint size ) {
-        this.anchor = Coord( x, y );
-        this.size = size;
-    }
     
     override void draw( Canvas canvas ) const {
         canvas.paint( "	Square( anchor:", this.anchor, ", size:", this.size, " )" );
@@ -69,13 +71,9 @@ class Square: Shape {
 }
 
 class Line: Shape {
+    mixin Ctors;
     
     Coord target;
-    
-    this( int ax, int ay, int tx, int ty ) {
-        this.anchor = Coord( ax, ay );
-        this.target = Coord( tx, ty );
-    }
     
     override void draw( Canvas canvas ) const {
         canvas.paint( "	Line( anchor:", this.anchor, ", target:", this.target, " )" );
@@ -84,13 +82,9 @@ class Line: Shape {
 }
 
 class Rect: Shape {
+    mixin Ctors;
     
     Coord target;
-    
-    this( int ax, int ay, int tx, int ty ) {
-        this.anchor = Coord( ax, ay );
-        this.target = Coord( tx, ty );
-    }
     
     override void draw( Canvas canvas ) const {
         canvas.paint( "	Rect( anchor:", this.anchor, ", target:", this.target, " )" );
@@ -99,15 +93,10 @@ class Rect: Shape {
 }
 
 class Oval: Shape {
+    mixin Ctors;
     
     Coord target;
     uint radius;
-    
-    this( int ax, int ay, int tx, int ty, uint radius ) {
-        this.anchor = Coord( ax, ay );
-        this.target = Coord( tx, ty );
-        this.radius = radius;
-    }
     
     override void draw( Canvas canvas ) const {
         canvas.paint( "	Oval( anchor:", this.anchor, ", target:", this.target, ", radius:", this.radius, " )" );
@@ -116,15 +105,10 @@ class Oval: Shape {
 }
 
 class Rhomb: Shape {
+    mixin Ctors;
     
     Coord target;
     uint width;
-    
-    this( int ax, int ay, int tx, int ty, uint width ) {
-        this.anchor = Coord( ax, ay );
-        this.target = Coord( tx, ty );
-        this.width = width;
-    }
     
     override void draw( Canvas canvas ) const {
         canvas.paint( "	Rhomb( anchor:", this.anchor, ", target:", this.target, ", width:", this.width, " )" );
@@ -133,15 +117,10 @@ class Rhomb: Shape {
 }
 
 class Trigon: Shape {
+    mixin Ctors;
     
     Coord second;
     Coord third;
-    
-    this( int ax, int ay, int sx, int sy, int tx, int ty ) {
-        this.anchor = Coord( ax, ay );
-        this.second = Coord( sx, sy );
-        this.third = Coord( tx, ty );
-    }
     
     override void draw( Canvas canvas ) const {
         canvas.paint( "	Trigon( anchor:", this.anchor, ", second:", this.second, ", third:", this.third, " )" );
@@ -150,6 +129,7 @@ class Trigon: Shape {
 }
 
 class Scene: Shape {
+    mixin Ctors;
     
     Shape[] shapes;
     
@@ -166,14 +146,14 @@ void main() {
     auto scene = new Scene;
     scene.draw( stdout );
     
-    scene.shapes ~= new Point( 1, 1 );
-    scene.shapes ~= new Circle( 5, 5, 3 ),
-    scene.shapes ~= new Square( 7, 7, 2 ),
-    scene.shapes ~= new Line( 1, 2, 3, 4 );
-    scene.shapes ~= new Rect( 0, 0, 6, 3 ),
-    scene.shapes ~= new Oval( 9, 7, 6, 5, 3 ),
-    scene.shapes ~= new Rhomb( 6, 7, 3, 5, 2 ),
-    scene.shapes ~= new Trigon( 3, 7, 8, 9, 6, 1 ),
+    scene.shapes ~= new Point( Coord( 1, 1 ) );
+    scene.shapes ~= new Circle( Coord( 5, 5 ), 3 ),
+    scene.shapes ~= new Square( Coord( 7, 7 ), 2 ),
+    scene.shapes ~= new Line( Coord( 1, 2 ), Coord( 3, 4 ) );
+    scene.shapes ~= new Rect( Coord( 0, 0 ), Coord( 6, 3 ) ),
+    scene.shapes ~= new Oval( Coord( 9, 7 ), Coord( 6, 5 ), 3 ),
+    scene.shapes ~= new Rhomb( Coord( 6, 7 ), Coord( 3, 5 ), 2 ),
+    scene.shapes ~= new Trigon( Coord( 3, 7 ), Coord( 8, 9 ), Coord( 6, 1 ) ),
     scene.draw( stdout );
 
     scene.shapes[0].anchor = Coord( 2, 2 );
