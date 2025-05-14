@@ -4,6 +4,8 @@
 
 import std;
 
+alias Canvas = File;
+
 struct Coord {
     
     int x;
@@ -17,7 +19,7 @@ struct Coord {
 
 abstract class Shape {
     Coord pos;
-    void draw( File output ) const;
+    void draw( Canvas canvas ) const;
 }
 
 class Point: Shape {
@@ -26,8 +28,8 @@ class Point: Shape {
         this.pos = Coord( x, y );
     }
     
-    override void draw( File output ) const {
-        output.writeln( "	Point( pos:", this.pos, " )" );
+    override void draw( Canvas canvas ) const {
+        canvas.writeln( "	Point( pos:", this.pos, " )" );
     }
     
 }
@@ -41,8 +43,8 @@ class Circle: Shape {
         this.radius = radius;
     }
     
-    override void draw( File output ) const {
-        output.writeln( "	Circle( pos:", this.pos, ", radius:", this.radius, " )" );
+    override void draw( Canvas canvas ) const {
+        canvas.writeln( "	Circle( pos:", this.pos, ", radius:", this.radius, " )" );
     }
     
 }
@@ -56,21 +58,21 @@ class Rectangle: Shape {
         this.dims = Coord( dx, dy );
     }
     
-    override void draw( File output ) const {
-        output.writeln( "	Rectangle( pos:", this.pos, ", dims:", this.dims, " )" );
+    override void draw( Canvas canvas ) const {
+        canvas.writeln( "	Rectangle( pos:", this.pos, ", dims:", this.dims, " )" );
     }
     
 }
 
 
-class Scene {
+class Scene: Shape {
     
     Shape[] shapes;
     
-    void render( File output ) const {
-        output.writeln( "Scene[" );
-        foreach( shape; shapes ) shape.draw( output );
-        output.writeln( "]" );
+    override void draw( Canvas canvas ) const {
+        canvas.writeln( "Scene[" );
+        foreach( shape; shapes ) shape.draw( canvas );
+        canvas.writeln( "]" );
     }
     
 }
@@ -78,13 +80,13 @@ class Scene {
 void main() {
     
     auto scene = new Scene;
-    scene.render( stdout );
+    scene.draw( stdout );
     
     scene.shapes ~= new Point( 1, 1 );
     scene.shapes ~= new Circle( 5, 5, 3 ),
     scene.shapes ~= new Rectangle( 0, 0, 6, 3 ),
-    scene.render( stdout );
+    scene.draw( stdout );
 
     scene.shapes[0].pos = Coord( 2, 2 );
-    scene.render( stdout );
+    scene.draw( stdout );
 }
