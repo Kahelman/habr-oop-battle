@@ -21,13 +21,13 @@ struct Coord {
     
 }
 
-alias AllFieldtypes( alias Class ) = staticMap!( Fields, BaseClassesTuple!Class, Class );
+alias AllFieldTypes( alias Class ) = staticMap!( Fields, BaseClassesTuple!Class, Class );
 
 mixin template Ctors() {
     
     this() {}
     
-    this( AllFieldtypes!( typeof(this) ) args ... ) {
+    this( AllFieldTypes!( typeof(this) ) args ... ) {
         AliasSeq!( super.tupleof, this.tupleof ) = args;
     }
     
