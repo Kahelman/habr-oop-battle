@@ -57,9 +57,9 @@ class Rectangle: Shape {
     
     Coord target;
     
-    this( int px, int py, int dx, int dy ) {
-        this.anchor = Coord( px, py );
-        this.target = Coord( dx, dy );
+    this( int ax, int ay, int tx, int ty ) {
+        this.anchor = Coord( ax, ay );
+        this.target = Coord( tx, ty );
     }
     
     override void draw( Canvas canvas ) const {
