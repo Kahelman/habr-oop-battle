@@ -9,7 +9,7 @@ struct Coord {
     int x;
     int y;
     
-    string toString() {
+    string toString() const {
         return "[ x:" ~ this.x.to!string ~ ", y:" ~ this.y.to!string ~ " ]";
     }
     
