@@ -5,7 +5,7 @@
 import std;
 
 immutable interface Shape {
-    void draw( File output ) const;
+    void draw( File output );
 }
 
 immutable struct Coord {
@@ -19,7 +19,7 @@ immutable struct Coord {
     
 }
 
-immutable class Point: Shape {
+ immutable class Point: Shape {
     
     Coord pos;
     
@@ -27,7 +27,7 @@ immutable class Point: Shape {
         this.pos = Coord( x, y );
     }
     
-    void draw( File output ) const {
+    void draw( File output ) {
         output.writeln( "Drawing Point( pos:", this.pos, " )" );
     }
     
@@ -43,7 +43,7 @@ immutable class Circle: Shape {
         this.radius = radius;
     }
     
-    void draw( File output ) const {
+    void draw( File output ) {
         output.writeln( "Drawing Circle( center:", this.center, ", radius:", this.radius, " )" );
     }
     
@@ -59,7 +59,7 @@ immutable class Rectangle: Shape {
         this.to = Coord( tx, ty );
     }
     
-    void draw( File output ) const {
+    void draw( File output ) {
         output.writeln( "Drawing Rectangle( from:", this.from, ", to:", this.to, " )" );
     }
     
