@@ -1,7 +1,7 @@
 // Approach: OOP
 // Language: D
 // Author: jin
-//
+
 import std;
 
 immutable interface Shape {
