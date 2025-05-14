@@ -44,7 +44,7 @@ immutable class Circle: Shape {
     }
     
     void draw( File output ) const {
-        writeln( "Drawing Circle( center:", this.center, ", radius:", this.radius, " )" );
+        output.writeln( "Drawing Circle( center:", this.center, ", radius:", this.radius, " )" );
     }
     
 }
@@ -60,7 +60,7 @@ immutable class Rectangle: Shape {
     }
     
     void draw( File output ) const {
-        writeln( "Drawing Rectangle( from:", this.from, ", to:", this.to, " )" );
+        output.writeln( "Drawing Rectangle( from:", this.from, ", to:", this.to, " )" );
     }
     
 }
